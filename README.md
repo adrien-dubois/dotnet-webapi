@@ -63,7 +63,7 @@ Créer un Service pour créer les méthodes de l'API en fonction des entités ma
 
 ### Controller
 
-Après le service, nous allons créer le controller, qui va, en s'appuyant sur le service, mapper les méthodes de ce dernier avec les requêtes HTTP adéquates *(GET,POST,UPDATE,PUT,PATCH,DELETE)* afin d'en faire des endpoints pour l'API. 
+Après le service, nous allons créer le controller, qui va, en s'appuyant sur le service, mapper les méthodes de ce dernier avec les requêtes HTTP adéquates *__(GET, POST, UPDATE, PUT, PATCH, DELETE)__* afin d'en faire des endpoints pour l'API. 
 
 Commencer par mettre l'attribut `[ApiController]` ainsi que la route `[Route("[controller]")]`
 Déclarer la class du controller avec l'attribut `ControllerBase` et relier le service avant de commencer la déclaration des requêtes avec les entêtes HTTP.
@@ -99,3 +99,23 @@ public class UsersController : ControllerBase
 ### Helpers
 
 Petites classes sur lesquelles on peut s'appuyer, comme par exemple le AppException qui permettra d'envoyer des messages en cas d'erreur à l'API. Ou un Middleware HandlerError qui s'occupera d'intercepter les erreur afin d'envoyer les bons statuts http aux réponse d'API.
+
+### Reconfigurer le Program.cs
+
+Enlever toutes les parties concernant Swagger.
+Ajouter le DataContext, les Cors, serializer en Json, l'AutoMapper, le Middleware.
+
+## Migration & DataBase
+
+Ajouter le package Design de EF Core pour effectuer la migration.
+
+`dotnet add package Microsoft.EntityFrameworkCore.Design`
+
+Et ensuite générer les fichiers de migrations *(à partir du dossier racine du projet)*
+
+`dotnet ef migrations add InitialCreate`
+
+Ces migrations vont créer la DataBase et les tables pour l'API .NET
+Donc lancer la commande : `dotnet ef database update`
+
+Vérifier dans la base MySql, vérifier si la nouvelle DB avec les tables ainsi que __EFMigrationsHistory ont bien été crées. Puis stop et relancer l'API avec `dotnet run`

@@ -6,7 +6,7 @@ using WebApi.Models.Users;
 using WebApi.Services;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
     private IUserService _userService;
