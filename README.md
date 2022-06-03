@@ -59,4 +59,43 @@ Créer les Models d'entité selon le profil des attributs de la table. *ex: Crea
 
 ### Services
 
-Créer un Service pour créer les méthodes de l'API en fonction des entités
+Créer un Service pour créer les méthodes de l'API en fonction des entités mais aussi des Models puisque la réaction des entités va varier selon le profil du Model. Commencer par définir les méthodes dans une interface, et ensuite dans le service récupérer le DataContext pour faire la jonction avec la DB.
+
+### Controller
+
+Après le service, nous allons créer le controller, qui va, en s'appuyant sur le service, mapper les méthodes de ce dernier avec les requêtes HTTP adéquates *(GET,POST,UPDATE,PUT,PATCH,DELETE)* afin d'en faire des endpoints pour l'API. 
+
+Commencer par mettre l'attribut `[ApiController]` ainsi que la route `[Route("[controller]")]`
+Déclarer la class du controller avec l'attribut `ControllerBase` et relier le service avant de commencer la déclaration des requêtes avec les entêtes HTTP.
+
+*_Exemple :_*
+
+```cs
+[ApiController]
+[Route("[controller]")]
+public class UsersController : ControllerBase
+{
+    private IUserService _userService;
+    private IMapper _mapper;
+
+    public UsersController(
+        IUserService userService,
+        IMapper mapper
+    )
+    {
+        _userService = userService;
+        _mapper = mapper;
+    }
+
+    [HttpGet]
+    public IActionResult getAll()
+    {
+        var users = _userService.GetAll();
+        return Ok(users);
+    }
+}
+```
+
+### Helpers
+
+Petites classes sur lesquelles on peut s'appuyer, comme par exemple le AppException qui permettra d'envoyer des messages en cas d'erreur à l'API. Ou un Middleware HandlerError qui s'occupera d'intercepter les erreur afin d'envoyer les bons statuts http aux réponse d'API.
