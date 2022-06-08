@@ -27,6 +27,33 @@ Et mettre à jour le `appsettings.json` avec la ConnectionString avec les infos 
 
 ```
 
+## Structure
+
+#### Authorization
+
+Contient les classes d'authentification et de l'autorisation JWT dans l'API.
+
+#### Controllers
+
+Définit les Endpoints & Routes pour l'API, les méthodes sont les points d'entrées de l'API via les requêtes HTTP
+
+#### Models
+s
+Modèle request / response pour les méthodes de contrôleur, les modèles de demande définissent les paramètres des demandes entrantes et les modèles de réponse définissent les données renvoyées.
+
+#### Services
+
+Contient la logique métier, la validation et le code d'accès à la base de données.
+
+#### Entities
+
+Représente les données d'application stockées dans la base de données.
+Entity Framework Core (EF Core) mappe les données relationnelles de la base de données aux instances d'objets d'entité C# dans l'application pour la gestion des données et CRUD.
+
+#### Properties
+
+Contient le fichier launchSettings.json qui définit l'environnement (ASPNETCORE_ENVIRONMENT), environnement de dev par défaut lors de l'exécution de l'API sur localhost.
+
 ### Créer les Entities
 
 Faire un dossier Entities et déclarer les Model de ses entité en ajoutant la Serialization en Json pour l'API. 
@@ -119,3 +146,9 @@ Ces migrations vont créer la DataBase et les tables pour l'API .NET
 Donc lancer la commande : `dotnet ef database update`
 
 Vérifier dans la base MySql, vérifier si la nouvelle DB avec les tables ainsi que __EFMigrationsHistory ont bien été crées. Puis stop et relancer l'API avec `dotnet run`
+
+
+## Partie Authentification
+
+Commencer par installer la partie JWT : `dotnet add package System.IdentityModel.Tokens.Jwt --version 6.19.0` & `dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 6.0.5`
+

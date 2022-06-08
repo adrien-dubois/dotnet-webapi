@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using WebApi.Authorization;
 using WebApi.Helpers;
 using WebApi.Services;
 
@@ -23,17 +24,18 @@ var builder = WebApplication.CreateBuilder(args);
 
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+    // Configurer les paramètres
+    services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
     // Configure le DI pour les services
+    services.AddScoped<IJwtUtils, JwtUtils>();
     services.AddScoped<IUserService, UserService>();
 
 }
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 
 {
     // global CORS policy
@@ -42,8 +44,9 @@ var app = builder.Build();
             .AllowAnyMethod()
             .AllowAnyHeader());
     
-    // Le handler error middleware
+    // Les middlewares
     app.UseMiddleware<ErrorHandlerMiddleware>();
+    app.UseMiddleware<JwtMiddleware>();
     app.MapControllers();
 }
 

@@ -8,6 +8,9 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
+        /*----- User -> Authentication -----*/
+        CreateMap<User, AuthenticateResponse>();
+
         /*----- Pour le MODEL CreateRequest -----*/
         CreateMap<CreateRequest, User>();
 

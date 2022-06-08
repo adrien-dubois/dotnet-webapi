@@ -2,23 +2,47 @@ namespace WebApi.Controllers;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using WebApi.Authorization;
+using WebApi.Helpers;
 using WebApi.Models.Users;
 using WebApi.Services;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
     private IUserService _userService;
     private IMapper _mapper;
+    private readonly AppSettings _appSettings;
 
     public UsersController(
         IUserService userService,
-        IMapper mapper
+        IMapper mapper,
+        IOptions<AppSettings> appSettings
     )
     {
         _userService = userService;
         _mapper = mapper;
+        _appSettings = appSettings.Value;
+    }
+
+    
+    [AllowAnonymous]
+    [HttpPost("authenticate")]
+    public IActionResult Authenticate(AuthenticateRequest model)
+    {
+        var response = _userService.Authenticate(model);
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public IActionResult Create(CreateRequest model)
+    {
+        _userService.Create(model);
+        return Ok(new { message = "Utilisateur enregistré" });
     }
 
     [HttpGet]
@@ -33,13 +57,6 @@ public class UsersController : ControllerBase
     {
         var user = _userService.GetById(id);
         return Ok(user);
-    }
-
-    [HttpPost]
-    public IActionResult Create(CreateRequest model)
-    {
-        _userService.Create(model);
-        return Ok(new { message = "Utilisateur créé" });
     }
 
     [HttpPut("{id}")]
