@@ -40,7 +40,7 @@ public class UserService : IUserService
 
         // validate
         if(user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
-            throw new AppException("Username or password is incorrect");
+            throw new AppException("Identifiant et/ou mot de passe incorrect");
         
         // Auth success
         var response = _mapper.Map<AuthenticateResponse>(user);
