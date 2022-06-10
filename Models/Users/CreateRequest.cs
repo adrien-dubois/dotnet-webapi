@@ -5,6 +5,8 @@ using WebApi.Entities;
 
 public class CreateRequest
 {
+    private int role = 1;
+
     [Required]
     public string Username { get; set; }
     
@@ -14,9 +16,11 @@ public class CreateRequest
     [Required]
     public string Lastname { get; set; }
 
-    [Required]
     [EnumDataType(typeof(Role))]
-    public string Role { get; set; }
+    public int Role { 
+        get => role; 
+        set => role = value; 
+        }
 
     [Required]
     [EmailAddress]
